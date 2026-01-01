@@ -1,0 +1,4 @@
+from add_tamil_translated_titles import add_tamil_translated_titles
+
+
+add_tamil_translated_titles("json path")
