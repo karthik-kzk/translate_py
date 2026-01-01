@@ -1,10 +1,10 @@
+from googletrans import Translator
 import json
 import re
-from indic_transliteration import sanscript
-from indic_transliteration.sanscript import transliterate
-
 
 def add_tamil_translated_titles(json_file):
+    translator = Translator()
+
     # Load existing JSON
     with open(json_file, "r", encoding="utf-8") as f:
         movies = json.load(f)
@@ -18,20 +18,14 @@ def add_tamil_translated_titles(json_file):
             continue
 
         try:
-            # Remove special characters, keep letters, numbers, spaces
-            clean_title = re.sub(r"[^A-Za-z0-9 ]+", " ", title).strip()
-
-            # Literal transliteration: English → Tamil
-            tamil_text = transliterate(
-                clean_title,
-                sanscript.ITRANS,
-                sanscript.TAMIL
+            result = translator.translate(
+                re.sub(r"[^A-Za-z0-9 ]+", "", title),
+                src="en",   # force English
+                dest="ta"
             )
-
-            movie["tamil_translated_title"] = tamil_text
-
+            movie["tamil_translated_title"] = result.text
         except Exception as e:
-            print(f"❌ Transliteration failed for '{title}': {e}")
+            print(f"❌ Translation failed for '{title}': {e}")
             movie["tamil_translated_title"] = title
 
     # Save back to the SAME file
