@@ -19,7 +19,7 @@ def add_tamil_translated_titles(json_file):
 
         try:
             result = translator.translate(
-                re.sub(r"[^A-Za-z0-9 ]+", "", title),
+                re.sub(r"[^\w\s]+", "", title),
                 src="en",   # force English
                 dest="ta"
             )
